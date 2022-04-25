@@ -28,11 +28,11 @@ func main() {
 	// initializing grpc client
 	client := pb.NewPrimesServiceClient(conn)
 	// waiting for two go routines to finish
-	wg.Add(1)
+	wg.Add(3)
 	// first goroutine fired that is getting all primes in range
-	// go getPrimesInRange(client)
+	go getPrimesInRange(client)
 	// second goroutine fired that is making a sentence from broken words
-	// go getWholeSentence(client)
+	go getWholeSentence(client)
 	// both goroutines have finished their task!
 	go findCurrentMaximum(client)
 	wg.Wait()
