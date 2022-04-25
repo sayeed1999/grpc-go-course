@@ -1,0 +1,44 @@
+// To generate auto code from proto, run this :-
+// protoc -Istreaming-api/proto --go_out=./streaming-api/proto --go_opt=module=github.com/sayeed1999/grpc-go-course --go-grpc_out=./streaming-api/proto --go-grpc_opt=module=github.com/sayeed1999/grpc-go-course streaming-api/proto/stream.proto
+
+
+syntax = "proto3";
+
+package stream;
+
+option go_package = "github.com/sayeed1999/grpc-go-course";
+
+message PrimesRequest {
+    int64 num = 1;
+}
+
+message WordRequest {
+    string word = 1;
+}
+
+message MaximumRequest {
+    int32 num = 1;
+}
+
+message PrimesResponse {
+    int64 prime = 1;
+}
+
+message SentenceResponse {
+    string sentence = 1;
+}
+
+message MaximumResponse {
+    int32 num = 1;
+}
+
+service PrimesService {
+    // Server streaming
+    rpc GetAllPrimes (PrimesRequest) returns (stream PrimesResponse);
+    
+    // Client streaming
+    rpc GetWholeSentenceFromBrokenWords (stream WordRequest) returns (SentenceResponse);
+
+    // Bi-directional streaming
+    rpc GetCurrentMaximum (stream MaximumRequest) returns (stream MaximumResponse);
+}
