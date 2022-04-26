@@ -1,12 +1,12 @@
 // To generate auto code from proto, run this :-
-// protoc -Istreaming-api/proto --go_out=./streaming-api/proto --go_opt=module=github.com/sayeed1999/grpc-go-course --go-grpc_out=./streaming-api/proto --go-grpc_opt=module=github.com/sayeed1999/grpc-go-course streaming-api/proto/stream.proto
+// protoc -Istreaming-api/proto --go_out=. --go_opt=module=github.com/sayeed1999/grpc-go-course --go-grpc_out=. --go-grpc_opt=module=github.com/sayeed1999/grpc-go-course streaming-api/proto/stream.proto
 
 
 syntax = "proto3";
 
 package stream;
 
-option go_package = "github.com/sayeed1999/grpc-go-course";
+option go_package = "github.com/sayeed1999/grpc-go-course/streaming-api/proto";
 
 message PrimesRequest {
     int64 num = 1;

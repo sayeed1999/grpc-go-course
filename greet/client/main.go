@@ -1,7 +1,11 @@
+// go build -o ./bin/greet/greetwithdeadline.exe ./greet/client/.
+
 package main
 
 import (
+	"fmt"
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -20,5 +24,12 @@ func main() {
 
 	c := pb.NewGreetServiceClient(conn)
 
-	doGreet(c)
+	// doGreet(c)
+	log.Println("greet before deadline...")
+	doGreetWithDeadline(c, time.Second*5)
+	log.Println("greet after deadline...")
+	doGreetWithDeadline(c, time.Second*2)
+	log.Println("greet on deadline, server will return but client will throw deadline...")
+	doGreetWithDeadline(c, time.Second*3)
+	fmt.Scanln()
 }

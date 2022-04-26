@@ -4,7 +4,7 @@
 // - protoc             v3.20.1
 // source: sum.proto
 
-package grpc_go_course
+package proto
 
 import (
 	context "context"

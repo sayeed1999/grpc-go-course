@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package sum;
 
-option go_package = "github.com/sayeed1999/grpc-go-course";
+option go_package = "github.com/sayeed1999/grpc-go-course/sum-api/proto";
 
 message SumRequest {
     int32 param1 = 1;

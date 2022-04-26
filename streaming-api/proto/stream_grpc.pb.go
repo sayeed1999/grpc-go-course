@@ -4,7 +4,7 @@
 // - protoc             v3.20.1
 // source: stream.proto
 
-package grpc_go_course
+package proto
 
 import (
 	context "context"
@@ -28,6 +28,7 @@ type PrimesServiceClient interface {
 	GetWholeSentenceFromBrokenWords(ctx context.Context, opts ...grpc.CallOption) (PrimesService_GetWholeSentenceFromBrokenWordsClient, error)
 	// Bi-directional streaming
 	GetCurrentMaximum(ctx context.Context, opts ...grpc.CallOption) (PrimesService_GetCurrentMaximumClient, error)
+	// Unary streaming
 	Sqrt(ctx context.Context, in *SqrtRequest, opts ...grpc.CallOption) (*SqrtResponse, error)
 }
 
@@ -155,6 +156,7 @@ type PrimesServiceServer interface {
 	GetWholeSentenceFromBrokenWords(PrimesService_GetWholeSentenceFromBrokenWordsServer) error
 	// Bi-directional streaming
 	GetCurrentMaximum(PrimesService_GetCurrentMaximumServer) error
+	// Unary streaming
 	Sqrt(context.Context, *SqrtRequest) (*SqrtResponse, error)
 	mustEmbedUnimplementedPrimesServiceServer()
 }
