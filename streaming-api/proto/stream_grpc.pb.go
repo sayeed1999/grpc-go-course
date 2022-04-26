@@ -28,6 +28,7 @@ type PrimesServiceClient interface {
 	GetWholeSentenceFromBrokenWords(ctx context.Context, opts ...grpc.CallOption) (PrimesService_GetWholeSentenceFromBrokenWordsClient, error)
 	// Bi-directional streaming
 	GetCurrentMaximum(ctx context.Context, opts ...grpc.CallOption) (PrimesService_GetCurrentMaximumClient, error)
+	Sqrt(ctx context.Context, in *SqrtRequest, opts ...grpc.CallOption) (*SqrtResponse, error)
 }
 
 type primesServiceClient struct {
@@ -135,6 +136,15 @@ func (x *primesServiceGetCurrentMaximumClient) Recv() (*MaximumResponse, error) 
 	return m, nil
 }
 
+func (c *primesServiceClient) Sqrt(ctx context.Context, in *SqrtRequest, opts ...grpc.CallOption) (*SqrtResponse, error) {
+	out := new(SqrtResponse)
+	err := c.cc.Invoke(ctx, "/stream.PrimesService/Sqrt", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PrimesServiceServer is the server API for PrimesService service.
 // All implementations must embed UnimplementedPrimesServiceServer
 // for forward compatibility
@@ -145,6 +155,7 @@ type PrimesServiceServer interface {
 	GetWholeSentenceFromBrokenWords(PrimesService_GetWholeSentenceFromBrokenWordsServer) error
 	// Bi-directional streaming
 	GetCurrentMaximum(PrimesService_GetCurrentMaximumServer) error
+	Sqrt(context.Context, *SqrtRequest) (*SqrtResponse, error)
 	mustEmbedUnimplementedPrimesServiceServer()
 }
 
@@ -160,6 +171,9 @@ func (UnimplementedPrimesServiceServer) GetWholeSentenceFromBrokenWords(PrimesSe
 }
 func (UnimplementedPrimesServiceServer) GetCurrentMaximum(PrimesService_GetCurrentMaximumServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetCurrentMaximum not implemented")
+}
+func (UnimplementedPrimesServiceServer) Sqrt(context.Context, *SqrtRequest) (*SqrtResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Sqrt not implemented")
 }
 func (UnimplementedPrimesServiceServer) mustEmbedUnimplementedPrimesServiceServer() {}
 
@@ -247,13 +261,36 @@ func (x *primesServiceGetCurrentMaximumServer) Recv() (*MaximumRequest, error) {
 	return m, nil
 }
 
+func _PrimesService_Sqrt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqrtRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrimesServiceServer).Sqrt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stream.PrimesService/Sqrt",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrimesServiceServer).Sqrt(ctx, req.(*SqrtRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PrimesService_ServiceDesc is the grpc.ServiceDesc for PrimesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PrimesService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "stream.PrimesService",
 	HandlerType: (*PrimesServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Sqrt",
+			Handler:    _PrimesService_Sqrt_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "GetAllPrimes",

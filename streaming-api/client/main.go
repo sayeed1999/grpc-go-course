@@ -16,6 +16,7 @@ var addr string = "localhost:50051"
 var wg *sync.WaitGroup
 
 func main() {
+
 	wg = &sync.WaitGroup{} // initializes a wait group
 
 	// grpc connection initialization...
@@ -27,6 +28,7 @@ func main() {
 	defer conn.Close()
 	// initializing grpc client
 	client := pb.NewPrimesServiceClient(conn)
+
 	// waiting for two go routines to finish
 	wg.Add(3)
 	// first goroutine fired that is getting all primes in range
@@ -36,4 +38,7 @@ func main() {
 	// both goroutines have finished their task!
 	go findCurrentMaximum(client)
 	wg.Wait()
+
+	// doSqrt(client, 10)
+	// doSqrt(client, -2)
 }

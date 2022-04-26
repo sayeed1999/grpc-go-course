@@ -32,6 +32,14 @@ message MaximumResponse {
     int32 num = 1;
 }
 
+message SqrtRequest {
+    int32 number = 1;
+}
+
+message SqrtResponse {
+    double result = 1;
+}
+
 service PrimesService {
     // Server streaming
     rpc GetAllPrimes (PrimesRequest) returns (stream PrimesResponse);
@@ -41,4 +49,7 @@ service PrimesService {
 
     // Bi-directional streaming
     rpc GetCurrentMaximum (stream MaximumRequest) returns (stream MaximumResponse);
+
+    // Unary streaming
+    rpc Sqrt (SqrtRequest) returns (SqrtResponse);
 }
