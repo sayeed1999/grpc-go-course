@@ -4,6 +4,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"sync"
 
@@ -39,6 +40,7 @@ func main() {
 	go findCurrentMaximum(client)
 	wg.Wait()
 
+	fmt.Scanln()
 	// doSqrt(client, 10)
 	// doSqrt(client, -2)
 }

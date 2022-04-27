@@ -15,7 +15,7 @@ func (s *Server) GetCurrentMaximum(stream pb.PrimesService_GetCurrentMaximumServ
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
-			break
+			return nil
 		}
 		if err != nil {
 			log.Fatal(err)
@@ -25,12 +25,11 @@ func (s *Server) GetCurrentMaximum(stream pb.PrimesService_GetCurrentMaximumServ
 		time.Sleep(time.Millisecond * 1000)
 		if req.Num > max {
 			max = req.Num
-		}
-		log.Println("max calculated - ", max)
-		err = stream.Send(&pb.MaximumResponse{Num: max})
-		if err != nil {
-			return err
+			log.Println("new max found - ", max)
+			err = stream.Send(&pb.MaximumResponse{Num: max})
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
-	return nil
 }
